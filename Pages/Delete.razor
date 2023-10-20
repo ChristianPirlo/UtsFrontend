@@ -1,0 +1,65 @@
+﻿@page "/Delete/{Id}"
+@using PenggunaSampah.Data
+@using PenggunaSampah.Models
+@inject PenggunaService penggunaservice
+@inject NavigationManager NavigationManager
+
+<h2>Delete Employee</h2>
+<hr />
+<h3>Are you sure want to delete this?</h3>
+
+<form>
+    <div class="row">
+        <div class=" col-md-8">
+            <div class="form-group">
+                <label> Id:</label>
+                <label>@obj.Id</label>
+            </div>
+            <div class="form-group">
+                <label>Nama :</label>
+                <label>@obj.Nama</label>
+            </div>
+            <div class="form-group">
+                <label>Gender:</label>
+                <label>@obj.Gender</label>
+            </div>
+            <div class="form-group">
+                <label>Kota :</label>
+                <label>@obj.Kota</label>
+            </div>
+            <div class="form-group">
+                <label>No_telp:</label>
+                <label>@obj.No_telp</label>
+            </div>
+           
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+                <input type="button" class="btn btn-danger" @onclick="@DeletePengguna" value="Delete" />
+                <input type="button" class="btn btn-primary" @onclick="@Cancel" value="Cancel" />
+            </div>
+        </div>
+    </div>
+</form>
+
+@code {
+    [Parameter]
+    public string Id { get; set; }
+    PenggunaModel obj = new PenggunaModel();
+    protected override async Task OnInitializedAsync()
+    {
+        obj = await Task.Run(() => penggunaservice.GetPenggunaById(Convert.ToInt32(Id)));
+    }
+    protected async void DeletePengguna()
+    {
+        await penggunaservice.DeletePengguna(obj);
+        NavigationManager.NavigateTo("PenggunaList");
+    }
+    void Cancel()
+    {
+        NavigationManager.NavigateTo("PenggunaList");
+    }
+}

@@ -1,0 +1,60 @@
+﻿@page "/addPengguna"
+@using PenggunaSampah.Models
+@using PenggunaSampah.Data
+@inject PenggunaService penggunaService
+@inject NavigationManager NavigationManager
+
+<PageTitle>Tambah Pengguna</PageTitle>
+
+<h3>Tambah Pengguna Baru</h3>
+
+<hr/>
+
+<form>
+    <div class="row">
+        <div class="col-md-8">
+            <div class="form-group">
+                <label for="Nama" class="control-label"> Nama</label>
+                <input for="Nama" class="form-control" @bind="@obj.Nama" />
+            </div>
+            <div class="form-group">
+                <label for="Gender" class="control-label"> Gender</label>
+                <select @bind="@obj.Gender" class="form-control">
+                    <option value="">-Select Gender</option>
+
+                    <option value="Pria">Pria</option>
+                    <option value="Wanita">Wanita</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="Kota" class="control-label"> Kota</label>
+                <input for="Kota" class="form-control" @bind="@obj.Kota" />
+            </div>
+            <div class="form-group">
+                <label for="No_telp" class="control-label"> No_tlp</label>
+                <input for="No_telp" class="form-control" @bind="@obj.No_telp" />
+            </div>
+        </div>
+    </div>
+    <div class="row mt-4">
+        <div class="col-md-4">
+            <div class="form-group">
+                <input type="button" class="btn btn-primary" @onclick="@CreatePengguna" value="Save" />
+                <input type="button" class="btn btn-primary" @onclick="@Cancel" value="Cancel" />
+            </div>
+        </div>
+    </div>
+</form>
+
+@code {
+    PenggunaModel obj = new PenggunaModel();
+    protected async void CreatePengguna()
+    {
+        await penggunaService.InsertPengguna(obj);
+        NavigationManager.NavigateTo("PenggunaList");
+    }
+    void Cancel()
+    {
+        NavigationManager.NavigateTo("PenggunaList");
+    }
+}
